@@ -4,7 +4,7 @@ import {auth, db} from "../../firebase/firebase.config";
 
 function FormularioDiagnostico({setModal}){
 
-    const user = auth?.currentUser?.uid;
+
 
     const [data, setData] = useState({
         diagnosis: '',
@@ -49,7 +49,7 @@ function FormularioDiagnostico({setModal}){
     }
 
     const addToDiagnosis = async() => {
-
+        const user = auth?.currentUser?.uid;
         try{
             await addDoc(collection(db, 'users', user, 'diagnosis'),{
                 diagnosis: data.diagnosis,
