@@ -14,7 +14,6 @@ function FormularioDiagnostico({setModal}){
     });
     const [errors, setErrors] = useState({});
 
-    const navegate = useNavigate();
 
     function handleFormControl(ev){
         const name = ev.target.name;
@@ -58,7 +57,7 @@ function FormularioDiagnostico({setModal}){
                 doctor: data.doctor,
                 others: data.others,
             })
-            navegate("/diagnosticos")
+
         }catch(error){
             console.log(error.message);
         }
