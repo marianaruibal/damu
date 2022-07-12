@@ -12,9 +12,7 @@ function Menu(){
                         <li><Link to="/medicacion">Medicación</Link></li>
                         <li><Link to="/diagnosticos">Mis diagnósticos</Link></li>
                         <li><Link to="/medicos">Médicos</Link></li>
-                        <li><Link to="#">Turnos</Link></li>
-                        <li><Link to="#">Estudios</Link></li>
-                        <li><Link to="#">Mi perfil</Link></li>
+                        <li><Link to="/perfil">Mi perfil</Link></li>
                     </ul>
                 </nav>
             </div>

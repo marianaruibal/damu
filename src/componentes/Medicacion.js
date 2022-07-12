@@ -2,22 +2,38 @@ import React, {Fragment, useEffect, useState} from "react";
 import Header from "./Headers/Header";
 import {Link} from "react-router-dom";
 import Modal from "./Modal";
+import ModalEditar from "./ModalEditar";
 import Agregar from "./iconos/Agregar";
-import DatosMedicacion from "./DatosMedicacion";
+import {auth, db} from "../firebase/firebase.config";
+import {collection, getDocs} from "firebase/firestore";
+import BotonEliminar from "./iconos/BotonEliminar";
+import BotonEditar from "./iconos/BotonEditar";
 
 function Medicacion(){
 
+    const user = auth?.currentUser?.uid;
+
     const [medicamentos, setMedicamentos] = useState([])
     const [modal, setModal] = useState(false);
+    const [modalEditar, setModalEditar] = useState(false);
 
     useEffect(()=>{
-        const allMedicines = async() => {
-            const response = await fetch('http://localhost:4000/medicines')
-            const parsed = await response.json();
-            setMedicamentos(parsed);
+        const getMedicine = async()=>{
+            try{
+                const querySnapshot = await getDocs(collection(db, 'users', user, 'medicine'));
+                const docs = [];
+                querySnapshot.forEach((doc)=>{
+                    docs.push({...doc.data(), id: doc.id});
+                });
+               // console.log(docs)
+                setMedicamentos(docs);
+            }catch(error){
+                console.log(error);
+            }
+
         }
-        allMedicines();
-    });
+        getMedicine();
+    },[medicamentos])
 
     return(
         <Fragment>
@@ -32,12 +48,26 @@ function Medicacion(){
 
                     {
                         medicamentos.map(medicamento =>(
-                            <DatosMedicacion
-                                key={medicamento.id}
-                                nombre={medicamento.name}
-                                cantidad={medicamento.amount}
-                                tipo={medicamento.type}
-                            />
+                            <div className="datos-secciones" key={medicamento.id}>
+                                <ul>
+                                    <li><span>Medicación: </span>{medicamento.name}</li>
+                                    <li><span>Cantidad:</span> {medicamento.amount} {medicamento.type}</li>
+                                    <li><span>Motivo/diagnóstico:</span> {medicamento.motive}</li>
+                                </ul>
+                                <div>
+                                    <BotonEliminar id={medicamento.id} collection={'medicine'}/>
+                                    <BotonEditar setModalEditar={setModalEditar}/>
+                                </div>
+
+                                {modalEditar &&
+                                <ModalEditar
+                                    titulo="Editar medicación"
+                                    color="h-naranja headerSec"
+                                    setModalEditar={setModalEditar}
+                                    formulario="medicacion"
+                                    id={medicamento.id}
+                                />}
+                            </div>
                         ))
                     }
 
@@ -48,6 +78,7 @@ function Medicacion(){
                         setModal={setModal}
                         formulario="medicacion"
                     />}
+
                 </div>
                 <Agregar  setModal={setModal} boton="Agregar medicación" color="agregar vta" />
             </div>

@@ -2,22 +2,37 @@ import React, {Fragment, useEffect, useState} from 'react';
 import Header from "./Headers/Header";
 import Agregar from "./iconos/Agregar";
 import Modal from "./Modal";
-import DatosMedico from "./DatosMedico";
+import ModalEditar from "./ModalEditar";
 import {Link} from "react-router-dom";
+import {auth, db} from "../firebase/firebase.config";
+import {collection, getDocs} from "firebase/firestore";
+import BotonEliminar from "./iconos/BotonEliminar";
+import BotonEditar from "./iconos/BotonEditar";
 
 function Medicos(){
 
+    const user = auth?.currentUser?.uid;
+
     const [medicos, setMedicos] = useState([])
     const [modal, setModal] = useState(false);
+    const [modalEditar, setModalEditar] = useState(false);
 
     useEffect(()=>{
-        const allDoctors = async() => {
-            const response = await fetch('http://localhost:4000/doctors')
-            const parsed = await response.json();
-            setMedicos(parsed);
+        const getDoctor = async()=>{
+            try{
+                const querySnapshot = await getDocs(collection(db, 'users', user, 'doctors'));
+                const docs = [];
+                querySnapshot.forEach((doc)=>{
+                    docs.push({...doc.data(), id: doc.id});
+                });
+                setMedicos(docs);
+            }catch(error){
+                console.log(error);
+            }
+
         }
-        allDoctors();
-    });
+        getDoctor();
+    },[medicos])
 
     return(
         <Fragment>
@@ -31,14 +46,28 @@ function Medicos(){
 
                     {
                         medicos.map(medico =>(
-                            <DatosMedico
-                                key={medico.id}
-                                nombre={medico.name}
-                                especialidad={medico.specialty}
-                                direccion={medico.direction}
-                                telefono={medico.phone}
-                                otros={medico.others}
-                            />
+                            <div className="datos-secciones" key={medico.id}>
+                                <ul>
+                                    <li><span>{medico.specialty}:</span> {medico.name}</li>
+                                    <li><span>Dirección:</span> {medico.direction}</li>
+                                    <li><span>Telefono:</span> {medico.phone}</li>
+                                    <li><span>Otros datos:</span> {medico.others}</li>
+                                </ul>
+                                <div>
+                                    <BotonEliminar id={medico.id} collection={'doctors'}/>
+                                    <BotonEditar setModalEditar={setModalEditar}/>
+                                </div>
+
+                                {modalEditar &&
+                                <ModalEditar
+                                    titulo="Editar médico"
+                                    color="h-naranja headerSec"
+                                    setModalEditar={setModalEditar}
+                                    formulario="medico"
+                                    id={medico.id}
+                                />}
+
+                            </div>
                         ))
                     }
 

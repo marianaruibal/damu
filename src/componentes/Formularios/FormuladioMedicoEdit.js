@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {auth, db} from "../../firebase/firebase.config";
-import {collection, addDoc} from "firebase/firestore";
-import {useLoadScript, MarkerF, GoogleMap} from "@react-google-maps/api";
-import PlacesAutocomplete, { geocodeByAddress, getLatLng} from 'react-places-autocomplete';
+import {getDoc, doc, setDoc} from "firebase/firestore";
+import PlacesAutocomplete, {geocodeByAddress, getLatLng} from "react-places-autocomplete";
+import {GoogleMap, MarkerF, useLoadScript} from "@react-google-maps/api";
 
-function FormularioMedico({setModal}){
+function FormularioMedicoEdit(props){
 
     const user = auth?.currentUser?.uid;
 
@@ -22,7 +22,24 @@ function FormularioMedico({setModal}){
         lng: -58.3815704
     });
 
-   const [address, setAddress] = useState('');
+    const [address, setAddress] = useState('');
+
+    useEffect(()=>{
+        const getDoctor = async()=>{
+            try{
+                const doctor = await getDoc(doc(db, 'users', user, 'doctors', props.id));
+
+                setData(doctor.data());
+                setAddress(doctor.data().direction);
+                handleSelectAddress(doctor.data().direction);
+
+            }catch(error){
+                console.log(error);
+            }
+
+        }
+        getDoctor();
+    },[])
 
     const handleOnChangeAddress = (value) => {
 
@@ -38,6 +55,7 @@ function FormularioMedico({setModal}){
 
         setCoordinate(latLng)
     }
+
     const [ libraries ] = useState(['places']);
     const {isLoaded} = useLoadScript({
         googleMapsApiKey: 'AIzaSyCQxJ5p_CSaeqGVDojpXIIGVPJCzE-WSqI',
@@ -52,21 +70,20 @@ function FormularioMedico({setModal}){
         })
     }
 
-
     const handleSubmit = (event)=>{
         event.preventDefault();
         const localErrors = {};
 
-        if(data.name === null || data.name.trim() === '' ){
+        if(data.name == null || data.name.trim() == '' ){
             localErrors.name = 'El campo nombre del médico debe completarse.';
         }
-        if(data.specialty === '' ){
+        if(data.specialty == '' ){
             localErrors.specialty = 'Debe seleccionar una opción.';
         }
-        if(address === null || address.trim() === '' ){
+        if(address == null || address.trim() == '' ){
             localErrors.direction = 'El campo dirección debe completarse.';
         }
-        if(data.phone === null || data.phone.trim() === '' ){
+        if(data.phone == null || data.phone.trim() == '' ){
             localErrors.phone = 'El campo telefóno debe completarse.';
         }else if(isNaN(data.phone)){
 
@@ -81,13 +98,13 @@ function FormularioMedico({setModal}){
         }
         setErrors({});
 
-        addToDoctors();
+        setToDoctors();
 
-        setModal(false);
+        props.setModalEditar(false);
     }
 
-    const addToDoctors = async() => {
-        await addDoc(collection(db, 'users', user, 'doctors'),{
+    const setToDoctors = async() => {
+        await setDoc(doc(db, 'users', user, 'doctors', props.id),{
             name: data.name,
             specialty: data.specialty,
             direction: address,
@@ -136,7 +153,6 @@ function FormularioMedico({setModal}){
                         <option value="Ginecologo">Ginecólogo</option>
                         <option value="Traumatologo">Traumatólogo</option>
                         <option value="Oftalmólogo">Oftalmólogo</option>
-
                     </select>
                     {errors.specialty &&
                     <div id="error-specialty" className="errors-validation">
@@ -144,6 +160,7 @@ function FormularioMedico({setModal}){
                     </div>
                     }
                 </div>
+                
 
                 <div>
                     <label htmlFor="direction">Dirección</label>
@@ -183,23 +200,23 @@ function FormularioMedico({setModal}){
                         <span>Error:</span>{errors.direction}
                     </div>
                     }
+
                     <GoogleMap zoom={15}
-                                       center={coordinates}
-                                       mapContainerStyle={{width: '85%', height: '300px'}}
-                                       mapContainerClassName={"map-container"}
-                                       options={{
-                                           fullscreenControl: false,
-                                           mapTypeControl: false,
-                                           streetViewControl: false,
-                                       }}
+                               center={coordinates}
+                               mapContainerStyle={{width: '85%', height: '300px'}}
+                               mapContainerClassName={"map-container"}
+                               options={{
+                                   fullscreenControl: false,
+                                   mapTypeControl: false,
+                                   streetViewControl: false,
+                               }}
 
-                            >
-                                {!address? '' : <MarkerF position={coordinates} />}
+                    >
+                        {!address? '' : <MarkerF position={coordinates} />}
 
-                            </GoogleMap>
-
-
+                    </GoogleMap>
                 </div>
+
 
 
                 <div>
@@ -236,4 +253,4 @@ function FormularioMedico({setModal}){
         </div>
     );
 }
-export default FormularioMedico;
+export default FormularioMedicoEdit;

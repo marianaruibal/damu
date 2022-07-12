@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import {auth, db} from "../../firebase/firebase.config";
-import {collection, addDoc} from "firebase/firestore";
+import {setDoc, getDoc, doc} from "firebase/firestore";
 
-function FormularioMedicacion({setModal}){
+function FormularioMedicacionEdit(props){
 
     const user = auth?.currentUser?.uid;
+    //console.log(props);
 
     const [data, setData] = useState({
         name: '',
@@ -16,6 +17,21 @@ function FormularioMedicacion({setModal}){
     const [errors, setErrors] = useState({});
 
     const navegate = useNavigate();
+
+    useEffect(()=>{
+        const getMedication = async()=>{
+            try{
+                const medicine = await getDoc(doc(db, 'users', user, 'medicine', props.id));
+                console.log(medicine.data());
+                setData(medicine.data());
+            }catch(error){
+                console.log(error);
+            }
+
+        }
+        getMedication();
+    },[])
+
 
     function handleFormControl(ev){
         const name = ev.target.name;
@@ -56,15 +72,13 @@ function FormularioMedicacion({setModal}){
         }
         setErrors({});
 
-        addToMedicine();
+        setToMedicine();
 
-        setModal(false);
-        console.log(setModal)
-
+        props.setModalEditar(false);
     }
 
-    const addToMedicine = async() => {
-        await addDoc(collection(db, 'users', user, 'medicine'),{
+    const setToMedicine = async() => {
+        await setDoc(doc(db, 'users', user, 'medicine', props.id),{
             name: data.name,
             amount: data.amount,
             type: data.type,
@@ -162,4 +176,4 @@ function FormularioMedicacion({setModal}){
         </div>
     );
 }
-export default FormularioMedicacion;
+export default FormularioMedicacionEdit;

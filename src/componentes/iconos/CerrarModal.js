@@ -1,9 +1,14 @@
 import React, {Fragment} from 'react';
 
-function CerrarModal({setModal}){
+function CerrarModal(props){
 
     const handleOcultarModal = () => {
-        setModal(false);
+        if(props.setModalEditar){
+            props.setModalEditar(false);
+        }else{
+            props.setModal(false);
+        }
+
     }
 
     return(

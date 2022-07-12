@@ -9,10 +9,5 @@ Comisión:dwn6av
 Alumna: Mariana Ballesteros Ruibal
 Alumna: Carolina Cigaina Rodelas
 Docente:Camila Belen Marcos Galban 
-Carácter de entrega: 1er parcial
+Carácter de entrega: Final
 
-Nota:
-
-Profesora le informamos que este tp esta basado en nuestro tema de tesis, se trata de una app que tiene como objetivo que el usuario lleve un registro de su historial clínico. La app le permitirá agendar los datos de sus médicos, crear un detalle de la medicación que esta bajo tratamiento, guardar información sobre sus estudios médicos, generar alarmas para la toma de su medicación y la posibilidad de agendar turnos médicos.
-
-Para generar la base de datos utilizamos json-server, usando el puerto 4000. 

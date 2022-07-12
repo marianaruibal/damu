@@ -1,9 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {collection, addDoc} from "firebase/firestore";
 import {auth, db} from "../../firebase/firebase.config";
 import {useNavigate} from "react-router-dom";
+import {setDoc, getDoc, doc} from "firebase/firestore";
 
-function FormularioDiagnostico({setModal}){
+function FormularioDiagnosticoEdit(props){
 
     const user = auth?.currentUser?.uid;
 
@@ -16,6 +17,21 @@ function FormularioDiagnostico({setModal}){
     const [errors, setErrors] = useState({});
 
     const navegate = useNavigate();
+
+    useEffect(()=>{
+        const getDiagnosis = async()=>{
+            try{
+                const diagnosis = await getDoc(doc(db, 'users', user, 'diagnosis', props.id));
+
+                setData(diagnosis.data());
+
+            }catch(error){
+                console.log(error);
+            }
+
+        }
+        getDiagnosis();
+    },[])
 
     function handleFormControl(ev){
         const name = ev.target.name;
@@ -41,25 +57,25 @@ function FormularioDiagnostico({setModal}){
 
         if(Object.entries(localErrors).length > 0){
             setErrors(localErrors);
+
             return;
         }
         setErrors({});
 
-        addToDiagnosis();
+        setToDiagnosis();
 
-        setModal(false);
+        props.setModalEditar(false);
     }
 
-    const addToDiagnosis = async() => {
+    const setToDiagnosis = async() => {
 
         try{
-            await addDoc(collection(db, 'users', user, 'diagnosis'),{
+            await setDoc(doc(db, 'users', user, 'diagnosis', props.id),{
                 diagnosis: data.diagnosis,
                 date: data.date,
                 doctor: data.doctor,
                 others: data.others,
             })
-            navegate("/diagnosticos")
         }catch(error){
             console.log(error.message);
         }
@@ -140,4 +156,4 @@ function FormularioDiagnostico({setModal}){
         </div>
     );
 }
-export default FormularioDiagnostico;
+export default FormularioDiagnosticoEdit;
