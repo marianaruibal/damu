@@ -423,9 +423,9 @@ input[type="submit"], .iniciar-sesion .button-user{
 }
 
 .cerrar-sesion{
-    display: inline-block;
+    display: block;
     width: 90%;
-    margin: 1em;
+    margin: 1em auto 0 auto;
     color: white;
     background: #3D358A;
     border-radius: 30px;
@@ -433,7 +433,6 @@ input[type="submit"], .iniciar-sesion .button-user{
     font-size: 16px;
     border: 1px solid #0036a9;
     height: 50px;
-
 }
 
 .perfil p{
