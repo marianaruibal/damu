@@ -29,13 +29,13 @@ function FormularioDiagnostico({setModal}){
         event.preventDefault();
         const localErrors = {};
 
-        if(data.diagnosis == null || data.diagnosis.trim() == '' ){
+        if(data.diagnosis === null || data.diagnosis.trim() === '' ){
             localErrors.diagnosis = 'El campo diagnóstico debe completarse.';
         }
-        if(data.doctor == '' ){
+        if(data.doctor === '' ){
             localErrors.doctor = 'El campo médico debe completarse.';
         }
-        if(data.date == null || data.date.trim() == '' ){
+        if(data.date === null || data.date.trim() === '' ){
             localErrors.date = 'El campo fecha debe completarse.';
         }
 

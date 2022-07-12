@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router-dom";
 import {auth, db} from "../../firebase/firebase.config";
 import {setDoc, getDoc, doc} from "firebase/firestore";
 
@@ -15,8 +14,6 @@ function FormularioMedicacionEdit(props){
         motive: '',
     });
     const [errors, setErrors] = useState({});
-
-    const navegate = useNavigate();
 
     useEffect(()=>{
         const getMedication = async()=>{
@@ -46,22 +43,22 @@ function FormularioMedicacionEdit(props){
         const localErrors = {};
 
 
-        if(data.name == null || data.name.trim() == '' ){
+        if(data.name === null || data.name.trim() === '' ){
             localErrors.name = 'El campo nombre de la medicación debe completarse.';
         }
 
-        if(data.motive == null || data.motive.trim() == '' ){
+        if(data.motive === null || data.motive.trim() === '' ){
             localErrors.motive = 'El campo motivo de la medicación debe completarse.';
         }
 
-        if(data.amount == null || data.amount == '' ){
+        if(data.amount === null || data.amount === '' ){
             localErrors.amount = 'El campo dosis debe completarse.';
         }else if(isNaN(data.amount)){
 
             localErrors.amount = 'Solo puede ingresar números en este campo';
         }
 
-        if(data.type == '' ){
+        if(data.type === '' ){
             localErrors.type = 'Debe seleccionar una opción.';
         }
 

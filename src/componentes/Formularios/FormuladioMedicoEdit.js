@@ -74,16 +74,16 @@ function FormularioMedicoEdit(props){
         event.preventDefault();
         const localErrors = {};
 
-        if(data.name == null || data.name.trim() == '' ){
+        if(data.name === null || data.name.trim() === '' ){
             localErrors.name = 'El campo nombre del médico debe completarse.';
         }
-        if(data.specialty == '' ){
+        if(data.specialty === '' ){
             localErrors.specialty = 'Debe seleccionar una opción.';
         }
-        if(address == null || address.trim() == '' ){
+        if(address === null || address.trim() === '' ){
             localErrors.direction = 'El campo dirección debe completarse.';
         }
-        if(data.phone == null || data.phone.trim() == '' ){
+        if(data.phone === null || data.phone.trim() === '' ){
             localErrors.phone = 'El campo telefóno debe completarse.';
         }else if(isNaN(data.phone)){
 

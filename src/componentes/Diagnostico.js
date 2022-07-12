@@ -42,7 +42,7 @@ function Diagnostico(){
                 <div className="content">
 
                     <p>Listado de diagnósticos:</p>
-                    {diagnostico.length == 0 && <p className="sin-datos">No ha agregado ningún diagnóstico aún.</p>}
+                    {diagnostico.length === 0 && <p className="sin-datos">No ha agregado ningún diagnóstico aún.</p>}
 
                     {
                         diagnostico.map(diagnostico =>(

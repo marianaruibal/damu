@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {collection, addDoc} from "firebase/firestore";
 import {auth, db} from "../../firebase/firebase.config";
-import {useNavigate} from "react-router-dom";
 import {setDoc, getDoc, doc} from "firebase/firestore";
 
 function FormularioDiagnosticoEdit(props){
@@ -16,7 +14,6 @@ function FormularioDiagnosticoEdit(props){
     });
     const [errors, setErrors] = useState({});
 
-    const navegate = useNavigate();
 
     useEffect(()=>{
         const getDiagnosis = async()=>{
@@ -45,13 +42,13 @@ function FormularioDiagnosticoEdit(props){
         event.preventDefault();
         const localErrors = {};
 
-        if(data.diagnosis == null || data.diagnosis.trim() == '' ){
+        if(data.diagnosis === null || data.diagnosis.trim() === '' ){
             localErrors.diagnosis = 'El campo diagnóstico debe completarse.';
         }
-        if(data.doctor == '' ){
+        if(data.doctor === '' ){
             localErrors.doctor = 'El campo médico debe completarse.';
         }
-        if(data.date == null || data.date.trim() == '' ){
+        if(data.date === null || data.date.trim() === '' ){
             localErrors.date = 'El campo fecha debe completarse.';
         }
 
