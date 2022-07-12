@@ -43,7 +43,7 @@ function Medicacion(){
                 <div className="content">
 
                     <p>Listado de medicamentos:</p>
-                    {medicamentos.length == 0 &&
+                    {medicamentos.length === 0 &&
                     <p className="sin-datos">No ha agregado ningún medicamento aún.</p>}
 
                     {

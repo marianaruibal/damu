@@ -42,7 +42,7 @@ function Medicos(){
                 <div className="content">
 
                 <p>Listado de médicos a los cuales concurre:</p>
-                    {medicos.length == 0 && <p className="sin-datos">No ha agregado ningún médico aún.</p>}
+                    {medicos.length === 0 && <p className="sin-datos">No ha agregado ningún médico aún.</p>}
 
                     {
                         medicos.map(medico =>(

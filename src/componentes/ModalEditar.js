@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import HeaderSecundario from "./Headers/HeaderSecundario";
 import FormularioMedicoEdit from "./Formularios/FormuladioMedicoEdit";
 import FormularioMedicacionEdit from "./Formularios/FormularioMedicacionEdit";

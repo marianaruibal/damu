@@ -1,12 +1,10 @@
-import React, {useState} from 'react';
-import {auth, db} from "../../firebase/firebase.config";
+import React from 'react';
+import {auth} from "../../firebase/firebase.config";
 
-import {doc,  deleteDoc, getDocs, collection, getDoc, where} from "firebase/firestore";
 
 function BotonEditar(props){
-    //console.log(props.setModalEditar);
 
-    const user = auth?.currentUser?.uid;
+
     const handleOnClick = () => {
         props.setModalEditar(true);
     }

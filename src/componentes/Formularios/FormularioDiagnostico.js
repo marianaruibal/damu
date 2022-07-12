@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {collection, addDoc} from "firebase/firestore";
 import {auth, db} from "../../firebase/firebase.config";
-import {useNavigate} from "react-router-dom";
 
 function FormularioDiagnostico({setModal}){
 

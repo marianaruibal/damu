@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import CerrarModal from "./iconos/CerrarModal";
 import {sendPasswordResetEmail} from "firebase/auth";
 import {auth} from "../firebase/firebase.config";
-import HeaderSecundario from "./Headers/HeaderSecundario";
 
 function ModalContrasenia(props){
 

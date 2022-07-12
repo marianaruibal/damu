@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {auth, db} from "../../firebase/firebase.config";
 
-import {doc,  deleteDoc, getDocs, collection, getDoc, where} from "firebase/firestore";
+import {doc,  deleteDoc} from "firebase/firestore";
 
 function BotonEliminar(props){
 
